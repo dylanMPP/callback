@@ -1,45 +1,31 @@
-import java.lang.reflect.Array;
 import java.net.Inet4Address;
-import java.util.Arrays;
-import java.util.Scanner;
 
 public class Client {
     public static void main(String[] args) {
-        Scanner reader = new Scanner(System.in);
-        int sent_request = 0;
+        int numRequests = 1000; // Número de solicitudes por cliente
+        int sentRequests = 0;
 
         try (com.zeroc.Ice.Communicator communicator = com.zeroc.Ice.Util.initialize(args, "client.cfg")) {
-
-            // twoway añadido, debe esperar respuesta
             Demo.PrinterPrx chatManagerPrx = Demo.PrinterPrx
                     .checkedCast(communicator.propertyToProxy("Printer.Proxy")).ice_twoway();
 
-            try {
-                String hostname = Inet4Address.getLocalHost().getHostName();
-                String msg = "";
-                String username = System.getProperty("user.name");
+            String hostname = Inet4Address.getLocalHost().getHostName();
+            String username = System.getProperty("user.name");
 
-                while (!msg.equalsIgnoreCase("exit")){
-                    String user_msg = reader.nextLine().trim();
+            for (int i = 1; i <= numRequests; i++) {
+                String userMessage = "" + i;
+                Long start = System.currentTimeMillis();
+                sentRequests++;
 
-                    Long start = System.currentTimeMillis();
-                    sent_request += 1;
+                String msg = chatManagerPrx.printString(username + ":" + hostname + " " + userMessage);
 
-                    msg = chatManagerPrx.printString(username+":"+hostname+" "+ user_msg);
-
-                    if(user_msg.equalsIgnoreCase("exit")){
-                        break;
-                    }
-
-                    String latency_response = "\nLatency (response | less the 1000ms of testing throughput): " + (System.currentTimeMillis() - start - 1000) + "ms";
-                    String requests = "\nSent requests (by this client): " + sent_request;
-                    System.out.println(username + ":" + hostname + "\n"
-                            + msg + latency_response + requests + "\n");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                String latencyResponse = "\nLatency (response | less than 1000ms of testing throughput): " +
+                        (System.currentTimeMillis() - start - 1000) + "ms";
+                String requests = "\nSent requests (by this client): " + sentRequests;
+                System.out.println(username + ":" + hostname + "\n" + msg + latencyResponse + requests + "\n");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 }

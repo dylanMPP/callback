@@ -2,27 +2,35 @@
 
 # Número de clientes a simular
 NUM_CLIENTS=5
+# Número de solicitudes por cliente
+NUM_REQUESTS=1000
 
 # Dirección y puerto del servidor
 SERVER_HOST="localhost"
 SERVER_PORT=8000
 
-java -jar server/build/libs/server.jar &
-
 # Función para simular un cliente
 simulate_client() {
- echo -e "1300"| java -jar client/build/libs/client.jar &
+    for ((i = 1; i <= NUM_REQUESTS; i++)); do
+        echo -e "$i"| java -jar client/build/libs/client.jar
+    done
 }
 
 
 # Esperar a que el servidor se inicie
+java -jar server/build/libs/server.jar &
 sleep 3
 
-# Simular múltiples clientes
+# Simular múltiples clientes en segundo plano y almacenar los PID en un arreglo
+declare -a CLIENT_PIDS
 for ((i = 1; i <= NUM_CLIENTS; i++)); do
- simulate_client "$1"
-
+    simulate_client "$i" &
+    CLIENT_PIDS+=($!)  # Almacena el PID del cliente en el arreglo
 done
- echo -e "exit"| java -jar client/build/libs/client.jar
+
 # Esperar a que los clientes completen
-wait
+for pid in "${CLIENT_PIDS[@]}"; do
+    wait $pid
+done
+
+pkill -f "java -jar server/build/libs/server.jar"

@@ -4,6 +4,7 @@ import com.zeroc.Ice.Current;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class PrinterI implements Demo.Printer {
     // añadimos communicator para cerrar el server
@@ -27,6 +28,7 @@ public class PrinterI implements Demo.Printer {
 
         String[] msg_parts = msg.split(" ");
 
+        System.out.println(Arrays.toString(msg_parts));
         if(msg_parts.length == 1){
             latency_process = System.currentTimeMillis() - start_time;
             requests_answered += 1;

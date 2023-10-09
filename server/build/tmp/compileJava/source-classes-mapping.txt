@@ -3,9 +3,9 @@ Demo/Printer.java
  Demo.Printer$1
 Demo/_PrinterPrxI.java
  Demo._PrinterPrxI
-PrinterI.java
- PrinterI
 Demo/PrinterPrx.java
  Demo.PrinterPrx
+PrinterI.java
+ PrinterI
 Server.java
  Server
