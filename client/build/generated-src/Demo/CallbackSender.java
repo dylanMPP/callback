@@ -17,11 +17,15 @@ package Demo;
 
 public interface CallbackSender extends com.zeroc.Ice.Object
 {
+    void message(CallbackReceiverPrx proxy, String msg, com.zeroc.Ice.Current current);
+
     void messageToHostname(CallbackReceiverPrx proxy, String hostname, String msg, com.zeroc.Ice.Current current);
 
     void initiateCallback(String hostname, CallbackReceiverPrx proxy, com.zeroc.Ice.Current current);
 
     void shutdown(com.zeroc.Ice.Current current);
+
+    String listRegisteredClients(com.zeroc.Ice.Current current);
 
     /** @hidden */
     static final String[] _iceIds =
@@ -45,6 +49,26 @@ public interface CallbackSender extends com.zeroc.Ice.Object
     static String ice_staticId()
     {
         return "::Demo::CallbackSender";
+    }
+
+    /**
+     * @hidden
+     * @param obj -
+     * @param inS -
+     * @param current -
+     * @return -
+    **/
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_message(CallbackSender obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        com.zeroc.Ice.InputStream istr = inS.startReadParams();
+        CallbackReceiverPrx iceP_proxy;
+        String iceP_msg;
+        iceP_proxy = CallbackReceiverPrx.uncheckedCast(istr.readProxy());
+        iceP_msg = istr.readString();
+        inS.endReadParams();
+        obj.message(iceP_proxy, iceP_msg, current);
+        return inS.setResult(inS.writeEmptyParams());
     }
 
     /**
@@ -104,6 +128,24 @@ public interface CallbackSender extends com.zeroc.Ice.Object
         return inS.setResult(inS.writeEmptyParams());
     }
 
+    /**
+     * @hidden
+     * @param obj -
+     * @param inS -
+     * @param current -
+     * @return -
+    **/
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_listRegisteredClients(CallbackSender obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        inS.readEmptyParams();
+        String ret = obj.listRegisteredClients(current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeString(ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
+    }
+
     /** @hidden */
     final static String[] _iceOps =
     {
@@ -112,6 +154,8 @@ public interface CallbackSender extends com.zeroc.Ice.Object
         "ice_isA",
         "ice_ping",
         "initiateCallback",
+        "listRegisteredClients",
+        "message",
         "messageToHostname",
         "shutdown"
     };
@@ -151,9 +195,17 @@ public interface CallbackSender extends com.zeroc.Ice.Object
             }
             case 5:
             {
-                return _iceD_messageToHostname(this, in, current);
+                return _iceD_listRegisteredClients(this, in, current);
             }
             case 6:
+            {
+                return _iceD_message(this, in, current);
+            }
+            case 7:
+            {
+                return _iceD_messageToHostname(this, in, current);
+            }
+            case 8:
             {
                 return _iceD_shutdown(this, in, current);
             }

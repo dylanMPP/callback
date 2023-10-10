@@ -17,6 +17,44 @@ package Demo;
 
 public interface CallbackSenderPrx extends com.zeroc.Ice.ObjectPrx
 {
+    default void message(CallbackReceiverPrx proxy, String msg)
+    {
+        message(proxy, msg, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default void message(CallbackReceiverPrx proxy, String msg, java.util.Map<String, String> context)
+    {
+        _iceI_messageAsync(proxy, msg, context, true).waitForResponse();
+    }
+
+    default java.util.concurrent.CompletableFuture<Void> messageAsync(CallbackReceiverPrx proxy, String msg)
+    {
+        return _iceI_messageAsync(proxy, msg, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<Void> messageAsync(CallbackReceiverPrx proxy, String msg, java.util.Map<String, String> context)
+    {
+        return _iceI_messageAsync(proxy, msg, context, false);
+    }
+
+    /**
+     * @hidden
+     * @param iceP_proxy -
+     * @param iceP_msg -
+     * @param context -
+     * @param sync -
+     * @return -
+     **/
+    default com.zeroc.IceInternal.OutgoingAsync<Void> _iceI_messageAsync(CallbackReceiverPrx iceP_proxy, String iceP_msg, java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<Void> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "message", null, sync, null);
+        f.invoke(false, context, null, ostr -> {
+                     ostr.writeProxy(iceP_proxy);
+                     ostr.writeString(iceP_msg);
+                 }, null);
+        return f;
+    }
+
     default void messageToHostname(CallbackReceiverPrx proxy, String hostname, String msg)
     {
         messageToHostname(proxy, hostname, msg, com.zeroc.Ice.ObjectPrx.noExplicitContext);
@@ -125,6 +163,43 @@ public interface CallbackSenderPrx extends com.zeroc.Ice.ObjectPrx
     {
         com.zeroc.IceInternal.OutgoingAsync<Void> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "shutdown", null, sync, null);
         f.invoke(false, context, null, null, null);
+        return f;
+    }
+
+    default String listRegisteredClients()
+    {
+        return listRegisteredClients(com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default String listRegisteredClients(java.util.Map<String, String> context)
+    {
+        return _iceI_listRegisteredClientsAsync(context, true).waitForResponse();
+    }
+
+    default java.util.concurrent.CompletableFuture<java.lang.String> listRegisteredClientsAsync()
+    {
+        return _iceI_listRegisteredClientsAsync(com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<java.lang.String> listRegisteredClientsAsync(java.util.Map<String, String> context)
+    {
+        return _iceI_listRegisteredClientsAsync(context, false);
+    }
+
+    /**
+     * @hidden
+     * @param context -
+     * @param sync -
+     * @return -
+     **/
+    default com.zeroc.IceInternal.OutgoingAsync<java.lang.String> _iceI_listRegisteredClientsAsync(java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<java.lang.String> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "listRegisteredClients", null, sync, null);
+        f.invoke(true, context, null, null, istr -> {
+                     String ret;
+                     ret = istr.readString();
+                     return ret;
+                 });
         return f;
     }
 

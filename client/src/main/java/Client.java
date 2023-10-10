@@ -47,23 +47,23 @@ public class Client {
                 // inicia el callback
                 callbackSenderPrx.initiateCallback(hostname, receiver);
 
-                while (!msg.equalsIgnoreCase("exit")){
-                    String user_msg = reader.readLine();
+                while (!msg.equalsIgnoreCase("exit")) {
+                    System.out.println("Escribe tu mensaje...");
+                    msg = reader.readLine();
 
                     Long start = System.currentTimeMillis();
                     sent_request += 1;
 
                     // enviar string al server
-                    callbackSenderPrx.messageToHostname(receiver, "localhost", user_msg);
+                    callbackSenderPrx.message(receiver, username+":"+hostname+" ->"+msg);
 
-                    if(user_msg.equalsIgnoreCase("exit")){
+                    if(msg.equalsIgnoreCase("exit")){
                         break;
                     }
 
                     String latency_response = "\nLatency (response | less the 1000ms of testing throughput): " + (System.currentTimeMillis() - start - 1000) + "ms";
                     String requests = "\nSent requests (by this client): " + sent_request;
-                    System.out.println(username + ":" + hostname + "\n"
-                            + msg + latency_response + requests + "\n");
+                    System.out.println(latency_response + requests + "\n");
                 }
             } catch (Exception e) {
                 e.printStackTrace();

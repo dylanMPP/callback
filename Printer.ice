@@ -12,8 +12,10 @@ module Demo
     }
     interface CallbackSender
     {
+        void message(CallbackReceiver* proxy, string msg);
         void messageToHostname(CallbackReceiver* proxy, string hostname, string msg);
         void initiateCallback(string hostname, CallbackReceiver* proxy);
         void shutdown();
+        string listRegisteredClients();
     }
 }
