@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class CallbackSenderI implements CallbackSender
             proxy.callback("Ups! Type a valid message" + getPerformance(current));
         }
 
-        if(msg_parts[1].equalsIgnoreCase("exit")){
+        if(msg_parts[1].equalsIgnoreCase("shutdown")){
             shutdown(current);
         }
 
@@ -70,7 +71,7 @@ public class CallbackSenderI implements CallbackSender
                 real_msg_parts = real_msg.split("listifs");
                 msg_type = "listifs";
             } else if(real_msg.startsWith("listports")){
-                real_msg_parts = (real_msg + msg_parts[2]).split("listports");
+                real_msg_parts = (real_msg).split("listports ");
                 msg_type = "listports";
             } else if(real_msg.startsWith("!")){
                 if(msg_parts.length >= 3) {
@@ -191,10 +192,12 @@ public class CallbackSenderI implements CallbackSender
         try {
             latency_process = System.currentTimeMillis() - start_time;
             requests_answered += 1;
+            flag = true;
             clients.get(hostname).callback(msg+getPerformance(current));
         } catch (NullPointerException nullPointerException){
             latency_process = System.currentTimeMillis() - start_time;
             requests_answered += 1;
+            flag = true;
             proxy.callback("Cliente no registrado"+getPerformance(current));
         }
     }
@@ -296,7 +299,7 @@ public class CallbackSenderI implements CallbackSender
 
             // message to hostname
             try {
-                clients.get(parts1[1]);
+                clients.get("");
             } catch (NullPointerException nullPointerException){
                 String result = "Cliente no registrado";
             }

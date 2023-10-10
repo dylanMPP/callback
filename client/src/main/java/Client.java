@@ -48,7 +48,7 @@ public class Client {
                 callbackSenderPrx.initiateCallback(hostname, receiver);
 
                 while (!msg.equalsIgnoreCase("exit")) {
-                    System.out.println("Escribe tu mensaje...");
+                    System.out.println("Escribe tu mensaje... (escribe 'shutdown' para apagar el servidor)");
                     msg = reader.readLine();
 
                     Long start = System.currentTimeMillis();
@@ -57,7 +57,7 @@ public class Client {
                     // enviar string al server
                     callbackSenderPrx.message(receiver, username+":"+hostname+" ->"+msg);
 
-                    if(msg.equalsIgnoreCase("exit")){
+                    if(msg.equalsIgnoreCase("exit") || msg.equalsIgnoreCase("shutdown")){
                         break;
                     }
 
