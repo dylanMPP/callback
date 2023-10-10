@@ -28,7 +28,6 @@ public class PrinterI implements Demo.Printer {
 
         String[] msg_parts = msg.split(" ");
 
-        System.out.println(Arrays.toString(msg_parts));
         if(msg_parts.length == 1){
             latency_process = System.currentTimeMillis() - start_time;
             requests_answered += 1;
@@ -103,27 +102,21 @@ public class PrinterI implements Demo.Printer {
     }
 
     public String prime_factors(Long num){
-        String msg = "";
+        StringBuilder primeFactors = new StringBuilder();
 
-        while (num % 2 == 0) {
-            // sout(2 + " ");
-            msg += (2 + " ");
-            num /= 2;
-        }
-
-        for (int i = 3; i <= Math.sqrt(num); i += 2) {
+        for (long i = 2; i <= num; i++) {
             while (num % i == 0) {
-                msg += i + " ";
+                primeFactors.append(i);
+                if (i != num) {
+                    primeFactors.append(", ");
+                }
                 num /= i;
             }
         }
 
-        if (num > 2) {
-            msg += num;
-        }
-
-        return msg;
+        return primeFactors.toString();
     }
+
 
     public boolean verify_msg(String[] real_msg_parts, String msg_type){
         switch (msg_type){
