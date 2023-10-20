@@ -17,5 +17,6 @@ module Demo
         void initiateCallback(string hostname, CallbackReceiver* proxy);
         void shutdown();
         string listRegisteredClients();
+        void notifyClient(string hostname);
     }
 }

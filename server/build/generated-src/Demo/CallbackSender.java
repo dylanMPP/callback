@@ -27,6 +27,8 @@ public interface CallbackSender extends com.zeroc.Ice.Object
 
     String listRegisteredClients(com.zeroc.Ice.Current current);
 
+    void notifyClient(String hostname, com.zeroc.Ice.Current current);
+
     /** @hidden */
     static final String[] _iceIds =
     {
@@ -146,6 +148,24 @@ public interface CallbackSender extends com.zeroc.Ice.Object
         return inS.setResult(ostr);
     }
 
+    /**
+     * @hidden
+     * @param obj -
+     * @param inS -
+     * @param current -
+     * @return -
+    **/
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_notifyClient(CallbackSender obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        com.zeroc.Ice.InputStream istr = inS.startReadParams();
+        String iceP_hostname;
+        iceP_hostname = istr.readString();
+        inS.endReadParams();
+        obj.notifyClient(iceP_hostname, current);
+        return inS.setResult(inS.writeEmptyParams());
+    }
+
     /** @hidden */
     final static String[] _iceOps =
     {
@@ -157,6 +177,7 @@ public interface CallbackSender extends com.zeroc.Ice.Object
         "listRegisteredClients",
         "message",
         "messageToHostname",
+        "notifyClient",
         "shutdown"
     };
 
@@ -206,6 +227,10 @@ public interface CallbackSender extends com.zeroc.Ice.Object
                 return _iceD_messageToHostname(this, in, current);
             }
             case 8:
+            {
+                return _iceD_notifyClient(this, in, current);
+            }
+            case 9:
             {
                 return _iceD_shutdown(this, in, current);
             }

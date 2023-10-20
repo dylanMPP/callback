@@ -58,6 +58,7 @@ public class Client {
                     callbackSenderPrx.message(receiver, username+":"+hostname+" ->"+msg);
 
                     if(msg.equalsIgnoreCase("exit") || msg.equalsIgnoreCase("shutdown")){
+                        callbackSenderPrx.notifyClient(hostname);
                         break;
                     }
 

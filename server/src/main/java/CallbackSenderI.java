@@ -1,7 +1,6 @@
 // Copyright (c) ZeroC, Inc. All rights reserved.
 //
 
-import Demo.CallbackReceiver;
 import Demo.CallbackReceiverPrx;
 import Demo.CallbackSender;
 import com.zeroc.Ice.Current;
@@ -9,8 +8,9 @@ import com.zeroc.Ice.Current;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,6 +23,8 @@ public class CallbackSenderI implements CallbackSender
     int requests_answered;
     String message;
     HashMap<String, CallbackReceiverPrx> clients = new HashMap<>();
+    HashMap<String, Boolean> discClients = new HashMap<>();
+    List< String[] > messagesPending = new ArrayList<>();
     List<String> clients_registered = new ArrayList<>();
     boolean flag;
 
@@ -112,7 +114,13 @@ public class CallbackSenderI implements CallbackSender
 
                 try {
                     for (String s : clients_registered) {
-                        messageToHostname(proxy, s, parts[1], current);
+                        try {
+                            if (!s.equals(Inet4Address.getLocalHost().getHostName())){
+                                messageToHostname(proxy, s, parts[1], current);
+                            }
+                        } catch (UnknownHostException unknownHostException){
+                            proxy.callback(unknownHostException.getMessage()+getPerformance(current));
+                        }
                     }
                 } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
                     flag = true;
@@ -188,12 +196,28 @@ public class CallbackSenderI implements CallbackSender
     }
 
     @Override
+    public void notifyClient(String hostname, Current current) {
+        discClients.put(hostname, false);
+    }
+
+    @Override
     public void messageToHostname(CallbackReceiverPrx proxy, String hostname, String msg, Current current) {
         try {
             latency_process = System.currentTimeMillis() - start_time;
             requests_answered += 1;
             flag = true;
-            clients.get(hostname).callback(msg+getPerformance(current));
+            // añadir si no está el usuario, guarda msje pendiente
+            //try {
+            if (discClients.get(hostname) == null){
+                clients.get(hostname).callback(msg+getPerformance(current));
+                proxy.callback("Message sent"+getPerformance(current));
+            } else {
+                String[] msgsTo = new String[2];
+                msgsTo[0] = hostname;
+                msgsTo[1] = msg+getPerformance(current);
+                messagesPending.add(msgsTo);
+                proxy.callback("User disconnected. Message sent"+getPerformance(current));
+            }
         } catch (NullPointerException nullPointerException){
             latency_process = System.currentTimeMillis() - start_time;
             requests_answered += 1;
@@ -205,8 +229,21 @@ public class CallbackSenderI implements CallbackSender
     @Override
     public void initiateCallback(String hostname, CallbackReceiverPrx proxy, com.zeroc.Ice.Current current)
     {
+        // cuando se conecte otra vez un usuario, si ya estba registrado y tiene msjes pendientes, se le muestran
         clients.put(hostname, proxy);
         clients_registered.add(hostname);
+        boolean flag = false;
+
+        for (int i = 0; i < messagesPending.size(); i++) {
+            if (messagesPending.get(i)[0].equals(hostname)){
+                flag = true;
+                clients.get(hostname).callback(messagesPending.get(i)[1]);
+            }
+        }
+
+        if (flag){
+            discClients.remove(hostname);
+        }
     }
 
     @Override

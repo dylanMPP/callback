@@ -1,16 +1,16 @@
 <state>
-  <timestamp value='1696913666510' />
+  <timestamp value='1697776208645' />
   <sourceSet name='default'>
-    <source name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\distributed-app\Printer.ice'>
-      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\distributed-app\server\build\generated-src\Demo\Printer.java' />
-      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\distributed-app\server\build\generated-src\Demo\CallbackReceiver.java' />
-      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\distributed-app\server\build\generated-src\Demo\CallbackSender.java' />
-      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\distributed-app\server\build\generated-src\Demo\PrinterPrx.java' />
-      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\distributed-app\server\build\generated-src\Demo\_PrinterPrxI.java' />
-      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\distributed-app\server\build\generated-src\Demo\CallbackReceiverPrx.java' />
-      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\distributed-app\server\build\generated-src\Demo\_CallbackReceiverPrxI.java' />
-      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\distributed-app\server\build\generated-src\Demo\CallbackSenderPrx.java' />
-      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\distributed-app\server\build\generated-src\Demo\_CallbackSenderPrxI.java' />
+    <source name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\callback\Printer.ice'>
+      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\callback\server\build\generated-src\Demo\Printer.java' />
+      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\callback\server\build\generated-src\Demo\CallbackReceiver.java' />
+      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\callback\server\build\generated-src\Demo\CallbackSender.java' />
+      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\callback\server\build\generated-src\Demo\PrinterPrx.java' />
+      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\callback\server\build\generated-src\Demo\_PrinterPrxI.java' />
+      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\callback\server\build\generated-src\Demo\CallbackReceiverPrx.java' />
+      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\callback\server\build\generated-src\Demo\_CallbackReceiverPrxI.java' />
+      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\callback\server\build\generated-src\Demo\CallbackSenderPrx.java' />
+      <file name='C:\Users\Dylan\Desktop\DM11\Programacion\1A_ICE_Projects\callback\server\build\generated-src\Demo\_CallbackSenderPrxI.java' />
     </source>
     <arg value='C:\Program Files\ZeroC\Ice-3.7.9\\bin\slice2java.exe' />
     <arg value='-IC:\Program Files\ZeroC\Ice-3.7.9\\slice' />
